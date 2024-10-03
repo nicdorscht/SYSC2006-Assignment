@@ -37,7 +37,7 @@ float get_input_f(void){
 }
 
 void init_activity(activity_t * activity_to_int){
-
+	
 }
 
 void init_milestone(milestone_t * milestone_to_int, unsigned short int num_activities){
