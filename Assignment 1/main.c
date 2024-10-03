@@ -13,13 +13,13 @@
 
 int main()
 {
-
     char project_name[100];
     unsigned short int num_milestones = 0;
     milestone_t milestone_list[MAX_MILESTONES];
+    int num_activities_per_milestone[MAX_MILESTONES];
 
     /** 1-  Display a welcome message **/
-    printf("\n/**********Welcome to the project management system!**********\\\n\n");
+    printf("\n/********** Welcome to the project management system! **********\\\n\n");
 
     /** 2- Get the project's name and number of milestones **/
     printf("Enter project name: ");
@@ -38,6 +38,8 @@ int main()
      * The capacity of the array must be the max number of milestones the program 
      * can handle as per the instructions **/
     for(int i = 0; i < num_milestones; i++){
+        printf("\n/******** Milestone %d ********\\\n\n", i + 1);
+
         printf("Enter number of activities for Milestone %d: ", i + 1);
         unsigned short int num_activities = get_input_usi();
 
@@ -47,17 +49,19 @@ int main()
         }
 
         init_milestone(&milestone_list[i], num_activities);
+        num_activities_per_milestone[i] = num_activities;
     }
     
     /** 4- Initialize the project **/
-    
+        project_t project = init_project(project_name, milestone_list, num_milestones, num_activities_per_milestone);
 
     /** 5- Print the main menu **/
-
+    print_main_menu();
    
 
     /** 6- Get user choice and handle it as per the instructions**/
     
+
 
     return EXIT_SUCCESS;
 }
