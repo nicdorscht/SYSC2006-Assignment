@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define SALARY 30
+#define MAX_ACTIVITIES 3
+#define DAY_LENGTH 8
+
 unsigned short int get_input_usi(void){
 
 	short int num = 0;
@@ -37,19 +41,72 @@ float get_input_f(void){
 }
 
 void init_activity(activity_t * activity_to_int){
-	
+
+	printf("Enter activity ID: ");
+	unsigned short int ID = get_input_usi();
+
+	while (true){
+		printf("\nImplement ID Check\n\n");
+		break;
+	}
+
+	printf("Enter activity name: ");
+	get_input_str(activity_to_int->name);
+
+	printf("Input activity duration in hours: ");
+	activity_to_int->planned_duration = get_input_usi();
+
+	activity_to_int->planned_cost = activity_to_int->planned_duration * SALARY;
+	activity_to_int->actual_cost = 0;
+	activity_to_int->actual_duration = 0;
+	activity_to_int->completed = false;
 }
 
 void init_milestone(milestone_t * milestone_to_int, unsigned short int num_activities){
 
+	printf("Enter milestone ID: ");
+	unsigned short int ID = get_input_usi();
+
+	while (true){
+		printf("\nImplement ID Check\n\n");
+		break;
+	}
+
+	printf("Enter milestone name: ");
+	get_input_str(milestone_to_int->name);
+
+	for(int i = 0; i < num_activities; i++){
+		printf("\n/**** Activity %d ****\\\n\n", i + 1);
+		init_activity(&milestone_to_int->activity_list[i]);
+	}
+
+	milestone_to_int->completed = false;
+	milestone_to_int->actual_cost = 0;
+	milestone_to_int->actual_duration = 0;
 }
 
 project_t init_project(char name[], milestone_t *milestone_list, int number_milestones, const int * number_activities){
+	float planned_cost = 0;
+	unsigned short int planned_duration = 0;
 
+	for(int i = 0; i < number_milestones; i++){
+		for(int j = 0; j < number_activities[i]; j++){
+			planned_cost += milestone_list[i].activity_list[j].planned_cost;
+			planned_duration += milestone_list[i].activity_list[j].planned_duration;
+		}
+	}
+
+	planned_duration = (planned_duration + (DAY_LENGTH - 1)) / DAY_LENGTH;
+
+	return (project_t) {name, planned_cost, 0, planned_duration, 0, false};
 }
 
 void print_main_menu(void){
-
+	printf("\nPlease select one of the following options:\n"
+			"1. Update Activity\n"
+			"2. Print stats\n"
+			"3. Exit\n"
+			);
 }
 
 void print_milestone_stats(const milestone_t * list_milestones, int num_milestones, const int * number_activities){
