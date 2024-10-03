@@ -9,13 +9,14 @@
 #include <stdio.h>
 #include "a1_functions.h"
 
-
+#define MAX_MILESTONES 5
 
 int main()
 {
 
     char project_name[100];
     unsigned short int num_milestones = 0;
+    milestone_t milestone_list[MAX_MILESTONES];
 
     /** 1-  Display a welcome message **/
     printf("\n/**********Welcome to the project management system!**********\\\n\n");
@@ -36,8 +37,17 @@ int main()
      * You need an array of milestones. 
      * The capacity of the array must be the max number of milestones the program 
      * can handle as per the instructions **/
+    for(int i = 0; i < num_milestones; i++){
+        printf("Enter number of activities for Milestone %d: ", i + 1);
+        unsigned short int num_activities = get_input_usi();
 
-    
+        while(num_activities < 1 || num_activities > 3){
+            printf("Number of activities must be between 1 and 3\nEnter number of activities for Milestone %d: ", i + 1);
+            num_activities = get_input_usi();
+        }
+
+        init_milestone(&milestone_list[i], num_activities);
+    }
     
     /** 4- Initialize the project **/
     
