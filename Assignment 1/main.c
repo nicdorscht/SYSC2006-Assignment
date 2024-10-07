@@ -65,7 +65,32 @@ int main()
    
 
     /** 6- Get user choice and handle it as per the instructions**/
-    
+    while(true){
+
+        unsigned short int user_choice = get_input_usi();
+
+        while(user_choice < 1 || user_choice > 3){
+            printf("Invalid Entry, enter a new value\n");
+            user_choice = get_input_usi();
+        }
+
+        switch (user_choice)
+        {
+        case 1:
+            change_submenu(milestone_list, num_milestones, num_activities_per_milestone, &project);
+            update_project(milestone_list, num_milestones, num_activities_per_milestone, &project);
+            break;
+
+        case 2:
+            print_project_stats(project, milestone_list, num_milestones, num_activities_per_milestone);
+            break;
+
+        case 3:
+            return EXIT_SUCCESS;
+        }
+
+        print_main_menu();
+    }
 
 
     return EXIT_SUCCESS;

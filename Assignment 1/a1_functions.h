@@ -89,3 +89,5 @@ void get_input_str(char destination[]);
 void get_id(short unsigned int * id);
 
 _Bool dupe_id(unsigned short int * milestone_ids, unsigned short int * activity_ids, milestone_t * milestone_ptr);
+
+void change_submenu(milestone_t * milestone_array, int num_milestones, const int * number_activities, project_t * my_project);
