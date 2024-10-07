@@ -11,6 +11,7 @@
 #endif
 
 #include "a1_data_structures.h"
+#include <stdbool.h>
 
 
 /********** DON'T MODIFY - FROM HERE **********/
@@ -84,3 +85,7 @@ void update_project(const milestone_t * milestone_array, int num_milestones, con
 
 // Extra function prototypes/declarations go here
 void get_input_str(char destination[]);
+
+void get_id(short unsigned int * id);
+
+_Bool dupe_id(unsigned short int * milestone_ids, unsigned short int * activity_ids, milestone_t * milestone_ptr);
