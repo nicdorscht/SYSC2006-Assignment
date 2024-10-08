@@ -107,11 +107,11 @@ void print_milestone_stats(const milestone_t * list_milestones, int num_mileston
 		if(list_milestones[i].completed == true){
 			printf("Milestone: %s\n"
 				"The milestone was $%d %s\n"
-				"The milestone was %d days %s\n\n",
+				"The milestone was %d hours %s\n\n",
 				list_milestones[i].name,
 				abs(list_milestones[i].actual_cost),
 				list_milestones[i].activity_list >= 0 ? "over budget" : "under budget",
-				list_milestones[i].actual_duration,
+				abs(list_milestones[i].actual_duration),
 				list_milestones[i].actual_duration >= 0 ? "delayed" : "early"
 				);
 		} else {
@@ -145,6 +145,16 @@ void print_project_stats(project_t details, const milestone_t * list_milestones,
 	"Project Status: %s\n\n",
 	details.name, details.completed ? "Complete" : "Incomplete");
 
+	unsigned short int temp_days = 0;
+
+	if(details.completed){
+		printf("Project was %d days %s\n"
+		"Project was $%d %s budget.\n\n",
+		abs(details.actual_duration - details.planned_duration), details.actual_duration - details.planned_duration > 0 ? "late" : "early",
+		abs(details.actual_cost - details.planned_cost), details.actual_cost - details.planned_cost > 0 ? "over" : "under"
+		);
+	}
+
 	print_milestone_stats(list_milestones, num_milestones, number_activities);
 }
 
@@ -154,10 +164,12 @@ void update_activity(activity_t * activity_to_update){
 
 	activity_to_update->actual_cost = activity_to_update->actual_duration * SALARY;
 
-	printf("Is the activity %s (%d) complete? 1/0: ", activity_to_update->name, activity_to_update->id);
-	unsigned short int complete_choice = get_input_usi();
+	printf("Is the activity %s (%d) complete? y/n: ", activity_to_update->name, activity_to_update->id);
+	char complete_choice;
 
-	if(complete_choice == 1) {
+	scanf(" %c", &complete_choice);
+
+	if(complete_choice == 'y' || complete_choice == 'Y') {
 		activity_to_update->completed = true;
 	} else{
 		activity_to_update->completed = false;
@@ -180,17 +192,19 @@ void update_milestone(milestone_t * milestone_to_update, int activities_in_miles
 void update_project(const milestone_t * milestone_array, int num_milestones, const int * number_activities, project_t * my_project){
 	_Bool completed = true;
 	unsigned short int temp_dur = 0;
+	unsigned short int temp_cost = 0;
 	
 	for(int i = 0; i < num_milestones; i++){
 		if(milestone_array[i].completed == false){
 			completed = false;
+		} else {
+			temp_cost += milestone_array[i].actual_cost;
+			temp_dur += milestone_array[i].actual_duration;
 		}
-
-		my_project->actual_cost += milestone_array[i].actual_cost;
-		temp_dur += milestone_array[i].actual_duration;
 	}
 
-	my_project->actual_duration = temp_dur / 8;
+	my_project->actual_cost = temp_cost;
+	my_project->actual_duration = (temp_dur + (DAY_LENGTH - 1)) / DAY_LENGTH; 
 	my_project->completed = completed;
 }
 
@@ -262,7 +276,7 @@ void change_submenu(milestone_t * milestone_array, int num_milestones, const int
 
 	while(true){
 		for(int i = 0; i < num_milestones; i++){
-			for(int j = 0; j < number_activities[j]; j++){
+			for(int j = 0; j < number_activities[i]; j++){
 				if(milestone_array[i].activity_list[j].id == choice){
 					valid_id = true;
 					update_activity(&milestone_array[i].activity_list[j]);
