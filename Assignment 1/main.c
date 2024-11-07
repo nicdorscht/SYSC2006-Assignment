@@ -7,6 +7,7 @@
 //Complete the includes
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include "a1_functions.h"
 
 #define MAX_MILESTONES 5
@@ -16,7 +17,7 @@ int main()
 {
     char project_name[100];
     unsigned short int num_milestones = 0;
-    milestone_t milestone_list[MAX_MILESTONES];
+    milestone_t *milestone_list;
     int num_activities_per_milestone[MAX_MILESTONES];
     unsigned short int milestone_ids[MAX_MILESTONES] = {0};
     unsigned short int activity_ids[MAX_MILESTONES * MAX_ACTIVITIES] = {0};
@@ -31,10 +32,9 @@ int main()
     printf("\nEnter number of milestones: ");
     num_milestones = get_input_usi();
 
-    while(num_milestones < 1 || num_milestones > 5){
-        printf("The number of milestones must be between 1 and 5\nEnter number of milestones: ");
-        num_milestones = get_input_usi();
-    }
+    milestone_list = malloc(sizeof(milestone_t) * num_milestones);
+    assert(milestone_list != NULL);
+
     
     /** 3- Initialize all milestones and activities.
      * You need an array of milestones. 
@@ -45,11 +45,6 @@ int main()
 
         printf("Enter number of activities for Milestone %d: ", i + 1);
         unsigned short int num_activities = get_input_usi();
-
-        while(num_activities < 1 || num_activities > 3){
-            printf("Number of activities must be between 1 and 3\nEnter number of activities for Milestone %d: ", i + 1);
-            num_activities = get_input_usi();
-        }
 
         init_milestone(&milestone_list[i], num_activities);
         num_activities_per_milestone[i] = num_activities;

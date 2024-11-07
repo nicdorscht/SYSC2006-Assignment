@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <assert.h>
 
 #define SALARY 30
 #define MAX_ACTIVITIES 3
@@ -71,12 +72,16 @@ void init_milestone(milestone_t *milestone_to_int, unsigned short int num_activi
 	printf("Enter milestone name: ");
 	get_input_str(milestone_to_int->name);
 
+	milestone_to_int->activity_list = malloc(sizeof(activity_t) * num_activities);
+	assert(milestone_to_int->activity_list != NULL);
+
 	for (int i = 0; i < num_activities; i++)
 	{
 		printf("\n/**** Activity %d ****\\\n\n", i + 1);
 		init_activity(&milestone_to_int->activity_list[i]);
 	}
 
+	milestone_to_int->num_activities = num_activities;
 	milestone_to_int->completed = false;
 	milestone_to_int->actual_cost = 0;
 	milestone_to_int->actual_duration = 0;
