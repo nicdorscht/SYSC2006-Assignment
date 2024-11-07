@@ -37,4 +37,11 @@ typedef struct project {
     _Bool completed;
 }project_t;
 
+typedef struct node node_t;
+
+struct node{
+    unsigned short int ID;
+    node_t *next;
+};
+
 /********** DON'T MODIFY UNTIL HERE **********/
