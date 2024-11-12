@@ -8,7 +8,6 @@
 #ifndef __A1_DATA_STRUCTURES_H__
 
 #define __A1_DATA_STRUCTURES_H__
-#define NUM_ACTIVITIES 3
 
 #endif
 /********** DON'T MODIFY FROM HERE **********/
@@ -24,7 +23,8 @@ typedef struct activity {
 typedef struct milestone {
     unsigned short int id;
     char name[100];
-    activity_t activity_list[NUM_ACTIVITIES];
+    activity_t *activity_list;
+    unsigned short int num_activities;
     _Bool completed;
     float actual_cost;
     short int actual_duration;
@@ -36,5 +36,12 @@ typedef struct project {
     unsigned short int planned_duration, actual_duration;
     _Bool completed;
 }project_t;
+
+typedef struct node node_t;
+
+struct node{
+    unsigned short int ID;
+    node_t *next;
+};
 
 /********** DON'T MODIFY UNTIL HERE **********/
