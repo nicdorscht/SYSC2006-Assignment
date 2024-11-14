@@ -3,6 +3,12 @@
    Student Number	=
 */
 
+#ifndef __A2_FUNCTIONS_H__
+
+#define __A2_FUNCTIONS_H__
+
+#endif
+
 #include "a2_nodes.h"
 
 /********** DON'T MODIFY **********/
