@@ -14,6 +14,17 @@
 
 // Your solution goes here
 
+user_t *add_user(user_t *users, const char *username, const char *password){
+    return malloc(sizeof(user_t));
+}
+
+void add_friend(user_t *user, const char *friend){
+
+}
+
+post_t *create_post(const char *text){
+    return malloc(sizeof(post_t));
+}
 
 
 /*
@@ -64,16 +75,4 @@ user_t *read_CSV_and_create_users(FILE *file, int num_users)
         }
     }
     return users;
-}
-
-user_t *add_user(user_t *users, const char *username, const char *password){
-    return malloc(sizeof(user_t));
-}
-
-void add_friend(user_t *user, const char *friend){
-
-}
-
-post_t *create_post(const char *text){
-    return malloc(sizeof(post_t));
 }

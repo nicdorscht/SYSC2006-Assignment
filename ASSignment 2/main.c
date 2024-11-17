@@ -13,7 +13,7 @@
 
 int main()
 {
-    /*FILE *csv_file = fopen("user_details.csv", "r");
+    FILE *csv_file = fopen("user_details.csv", "r");
     if (csv_file == NULL)
     {
         perror("Error opening the CSV file");
@@ -22,7 +22,7 @@ int main()
     // Parse CSV data and create users
     user_t *users = read_CSV_and_create_users(csv_file, 50);
 
-    fclose(csv_file);*/
+    fclose(csv_file);
  
     //Print main menu
     printf(
