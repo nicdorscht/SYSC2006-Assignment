@@ -1,6 +1,6 @@
 /********* main.c ********
-    Student Name 	=
-    Student Number	=
+    Student Name 	= Nicholas Dorscht
+    Student Number	= 101298132
 */
 
 // Includes go here
@@ -13,7 +13,7 @@
 
 int main()
 {
-    FILE *csv_file = fopen("user_details.csv", "r");
+    /*FILE *csv_file = fopen("user_details.csv", "r");
     if (csv_file == NULL)
     {
         perror("Error opening the CSV file");
@@ -22,18 +22,51 @@ int main()
     // Parse CSV data and create users
     user_t *users = read_CSV_and_create_users(csv_file, 50);
 
-    fclose(csv_file);
+    fclose(csv_file);*/
  
     //Print main menu
-    printf(
-        "*******************************************\n"
-        "\t\tMAIN MENU\n"
-        "*******************************************\n"
-        "1. Register a new user\n"
-        "2. Manage a user's profile (change password)\n"
-        "3. Manage a user's posts (add/remove)\n"
-        "4. Manage a user's friends (add/remove)\n"
-        "5. Display a user's posts\n"
-        "6. Exit"
-        );
+        //Main loop
+
+        user_t *users = NULL;
+
+        while(true){
+
+            print_menu();
+            int user_choice = get_int(1, 6);
+
+            switch(user_choice){
+                case 1: 
+                    char username[30];
+                    char password[15];
+
+                    printf("Enter a username: ");
+                    scanf(" %s", username);
+                    printf("Enter an up to 15 character password: ");
+                    scanf(" %s", password);
+
+                    users = add_user(users, username, password);
+                break;
+
+                case 2:
+                    change_password(users);
+                break;
+
+                case 3:
+                break;
+
+                case 4:
+                break;
+
+                case 5:
+                break;
+
+                case 6:
+                    printf("Thank you for using Facebook!\n");
+                    return EXIT_SUCCESS;
+                    break;
+
+                default:
+                    continue;
+            }
+        }
 }

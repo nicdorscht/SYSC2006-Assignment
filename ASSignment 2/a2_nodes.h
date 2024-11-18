@@ -1,13 +1,13 @@
 /********* nodes.h ********
-    Student Name 	=
-    Student Number	=
+    Student Name 	= Nicholas Dorscht
+    Student Number	= 101298132
 */
 
 #ifndef __A2_NODES_H__
 
 #define __A2_NODES_H__
 
-#endif
+
 
 /********** DON'T MODIFY **********/
 // Structure to represent a linked list of users
@@ -34,3 +34,5 @@ typedef struct post
     char content[250];
     struct post *next;
 } post_t;
+
+#endif

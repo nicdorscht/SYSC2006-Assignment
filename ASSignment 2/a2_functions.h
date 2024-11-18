@@ -1,15 +1,15 @@
 /********* functions.h ********
-   Student Name 	=
-   Student Number	=
+   Student Name 	= Nicholas Dorscht
+   Student Number	= 101298132
 */
 
 #ifndef __A2_FUNCTIONS_H__
 
 #define __A2_FUNCTIONS_H__
+#include "a2_nodes.h"
 
 #endif
 
-#include "a2_nodes.h"
 
 /********** DON'T MODIFY **********/
 /*
@@ -104,5 +104,9 @@ user_t *read_CSV_and_create_users(FILE *file, int num_users);
 
 // Extra functions' Prototypes/Declarations go here
 
+//Get int from user, l_limit: lower acceptable limit, h_limit: upper acceptable limit
+int get_int(int l_limit, int h_limit);
 
+void change_password(user_t *users);
 
+void post_menu(user_t *users, const char *username);
