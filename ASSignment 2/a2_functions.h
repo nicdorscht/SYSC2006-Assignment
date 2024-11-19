@@ -109,4 +109,4 @@ int get_int(int l_limit, int h_limit);
 
 void change_password(user_t *users);
 
-void post_menu(user_t *users, const char *username);
+void post_menu(user_t *users);

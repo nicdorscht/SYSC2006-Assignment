@@ -52,6 +52,7 @@ int main()
                 break;
 
                 case 3:
+                    post_menu(users);
                 break;
 
                 case 4:
