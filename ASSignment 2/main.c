@@ -24,52 +24,54 @@ int main()
     user_t *users = read_CSV_and_create_users(csv_file, 50);
 
     fclose(csv_file);
- 
-    //Print main menu
-        //Main loop
 
-        while(true){
+    // Print main menu
+    // Main loop
 
-            print_menu();
-            int user_choice = get_int(1, 6);
+    while (true)
+    {
 
-            switch(user_choice){
-                case 1: 
-                    char username[30];
-                    char password[15];
+        print_menu();
+        int user_choice = get_int(1, 6);
 
-                    printf("Enter a username: ");
-                    scanf(" %s", username);
-                    printf("Enter an up to 15 character password: ");
-                    scanf(" %s", password);
+        switch (user_choice)
+        {
+        case 1:
+            char username[30];
+            char password[15];
 
-                    users = add_user(users, username, password);
-                break;
+            printf("Enter a username: ");
+            scanf(" %s", username);
+            printf("Enter an up to 15 character password: ");
+            scanf(" %s", password);
 
-                case 2:
-                    change_password(users);
-                break;
+            users = add_user(users, username, password);
+            break;
 
-                case 3:
-                    post_menu(users);
-                break;
+        case 2:
+            change_password(users);
+            break;
 
-                case 4:
-                    friends_menu(users);
-                break;
+        case 3:
+            post_menu(users);
+            break;
 
-                case 5:
-                    display_posts_by_n(users, NUM_POSTS);
-                break;
+        case 4:
+            friends_menu(users);
+            break;
 
-                case 6:
-                    printf("Thank you for using Facebook!\n");
-                    teardown(users);
-                    return EXIT_SUCCESS;
-                    break;
+        case 5:
+            display_posts_by_n(users, NUM_POSTS);
+            break;
 
-                default:
-                    continue;
-            }
+        case 6:
+            printf("Thank you for using Facebook!\n");
+            teardown(users);
+            return EXIT_SUCCESS;
+            break;
+
+        default:
+            continue;
         }
+    }
 }
