@@ -15,66 +15,36 @@
 // Your solution goes here
 
 user_t *add_user(user_t *users, const char *username, const char *password){
+    user_t *new_user = malloc(sizeof(user_t));
+    assert(new_user != NULL);
+
+    new_user->friends = NULL;
+    new_user->next = NULL;
+    new_user->posts = NULL;
+    strcpy(new_user->username, username);
+    strcpy(new_user->password, password);
+
     if(users == NULL){
-        users = malloc(sizeof(user_t));
-        assert(users != NULL);
-
-        users->next = NULL;
-        strcpy(users->username, username);
-        strcpy(users->password, password);
-        users->friends = NULL;
-        users->posts = NULL;
-
-        return users;
-
-    } else if (strcmp(username, users->username) < 0) {
-        user_t *temp = malloc(sizeof(user_t));
-        assert(temp != NULL);
-
-        temp->next = users;
-        temp->friends = NULL;
-        temp->posts = NULL;
-        strcpy(temp->username, username);
-        strcpy(temp->password, password);
-
-        return temp;
-    } else {
-        user_t *ptr = users;
-        user_t *prev = NULL;
-
-        for( ; ptr->next != NULL && strcmp(username, ptr->username) > 0; ) { 
-            printf("Comp: %d", strcmp(username, ptr->username));
-            prev = ptr;
-            ptr = ptr->next;
-        }
-
-        if(ptr->next == NULL){
-            user_t *temp = malloc(sizeof(user_t));
-            assert(temp != NULL);
-
-            temp->next = NULL;
-            temp->friends = NULL;
-            temp->posts = NULL;
-            strcpy(temp->username, username);
-            strcpy(temp->password, password);
-            ptr->next = temp;
-        } else {
-            user_t *temp = malloc(sizeof(user_t));
-            assert(temp != NULL);
-
-            temp->next = ptr;
-            prev->next = temp;
-
-            temp->friends = NULL;
-            temp->posts = NULL;
-
-            strcpy(temp->password, password);
-            strcpy(temp->username, username);
-        }
-
-        return users;
+        return new_user;
     }
 
+    user_t *ptr = users;
+    user_t *prev = NULL;
+
+    if(strcmp(ptr->username, username) > 0){
+        new_user->next = users;
+        return new_user;
+    }
+
+    for( ; ptr != NULL; prev = ptr, ptr = ptr->next){
+        if(strcmp(ptr->username, username) > 0){
+            new_user->next = ptr;
+            prev->next = new_user;
+            return users;
+        }
+    }
+
+    prev->next = new_user;
     return users;
 }
 
@@ -90,16 +60,86 @@ user_t *find_user(user_t *users, const char *username){
     return NULL;
 }
 
-void add_friend(user_t *user, const char *friend){
+friend_t *create_friend(const char *username){
+    friend_t *new_friend = malloc(sizeof(friend_t));
+    assert(new_friend != NULL);
 
+    new_friend->next = NULL;
+    strcpy(new_friend->username, username);
+
+    return new_friend;
 }
 
-void add_post(user_t *user, const char *text){
+void add_friend(user_t *user, const char *friend){
+    friend_t *new_friend = create_friend(friend);
+
+    if(user->friends == NULL) { 
+        user->friends = new_friend; 
+        return; 
+    }
+
+    friend_t *ptr = user->friends;
+    friend_t *prev = NULL;
+
+    if(strcmp(ptr->username, friend) > 0){
+        new_friend->next = ptr;
+        user->friends = new_friend;
+        return;
+    }
+
+    for( ; ptr != NULL; prev = ptr, ptr = ptr->next){
+        if(strcmp(ptr->username, friend) > 0){
+            new_friend->next = ptr;
+            prev->next = new_friend;
+            return;
+        }
+    }
+
+    prev->next = new_friend;
+}
+
+_Bool delete_friend(user_t *user, char *friend_name){
+    if(user->friends == NULL){
+        printf("No friends to delete!\n");
+        return false;
+    }
+
+    friend_t *ptr = user->friends;
+    friend_t *prev = NULL;
+
+    if(strcmp(ptr->username, friend_name) == 0){
+        user->friends = ptr->next;
+        
+        free(ptr);
+        ptr = NULL;
+
+        return true;
+    }
+
+    for( ; ptr != NULL; prev = ptr, ptr = ptr->next){
+        if(strcmp(ptr->username, friend_name) == 0){
+            prev->next = ptr->next;
+            free(ptr);
+            ptr = NULL;
+
+            return true;
+        }
+    }
+    return false;
+}
+
+post_t *create_post(const char *text){
     post_t *new_post = malloc(sizeof(post_t));
     assert(new_post != NULL);
 
     new_post->next = NULL;
     strcpy(new_post->content, text);
+
+    return new_post;
+}
+
+void add_post(user_t *user, const char *text){
+    post_t *new_post = create_post(text);
 
     if(user->posts == NULL){
         user->posts = new_post;
@@ -116,6 +156,12 @@ _Bool delete_post(user_t *user){
         return false;
     }
 
+    if(user->posts->next == NULL){
+        free(user->posts);
+        user->posts = NULL;
+        return true;
+    }
+
     post_t *ptr = user->posts;
     for( ; ptr->next->next != NULL; ptr = ptr->next);
 
@@ -125,10 +171,25 @@ _Bool delete_post(user_t *user){
     return true;
 }
 
+void display_user_friends(user_t *user){
+    printf("List of %s's friends:\n", user->username);
+
+    if(user->friends == NULL){ printf("No friends\n"); return; }
+
+    friend_t *ptr = user->friends;
+
+    for(int i = 1; ptr != NULL; ptr = ptr->next, i++){
+        printf("%d. %s\n", i, ptr->username);
+    }
+}
+
 void display_all_user_posts(user_t *user){
+
+    if(user->posts == NULL){ return; }
+
     printf(
         "----------------------------------------------\n"
-        "\t\tPosts from %s\n"
+        "\tPosts from %s\n"
         "----------------------------------------------\n"
         , user->username
     );
@@ -140,6 +201,34 @@ void display_all_user_posts(user_t *user){
         }
 
         printf("\n");
+}
+
+void display_posts_by_n(user_t *users, int number){
+    char name[30];
+
+    printf("Enter user who's posts you wish to see: ");
+    scanf(" %s", name);
+
+    user_t *user_ptr = find_user(users, name);
+
+    if(user_ptr == NULL){ printf("User not found\n"); return; }
+    if(user_ptr->posts == NULL){ printf("User has no posts\n"); return; }
+
+    post_t *post_ptr = user_ptr->posts;
+
+    while(post_ptr != NULL){
+        for(int i = 0; i < number && post_ptr != NULL; post_ptr = post_ptr->next, i++){
+            printf("\n%s\n", post_ptr->content);
+        }
+
+        printf("\nSee more? (y/n): ");
+        if(!get_yn()){
+            return;
+        } else if(post_ptr == NULL){
+            printf("\nNo more posts to display\n");
+            return;
+        }
+    }
 }
 
 void print_menu(){
@@ -211,7 +300,7 @@ void change_password(user_t *users){
 void post_menu(user_t *users){
     char username[30];
 
-    printf("Enter a username to see their posts: ");
+    printf("Enter a username to manage their posts: ");
     scanf( "%s", username);
 
     user_t *ptr = find_user(users, username);
@@ -225,17 +314,18 @@ void post_menu(user_t *users){
         return;
     }
 
-    printf(
+    while(true){
+
+        printf(
         "\n----------------------------------------------\n"
-        "\t\tManaging %s's posts"
+        "\tManaging %s's posts"
         "\n----------------------------------------------\n"
         , ptr->username);
 
-    if(ptr->posts == NULL){
+        if(ptr->posts == NULL){
         printf("Note: No posts available for %s\n", ptr->username);
-    } 
+        }
 
-    while(true){
         printf(
         "1. Add a new post\n"
         "2. Remove a post\n"
@@ -271,6 +361,90 @@ void post_menu(user_t *users){
             default:
                 return;
         }
+    }
+}
+
+void friends_menu(user_t *users){
+    char username[30];
+
+    printf("Enter a username to manage their friends: ");
+    scanf( "%s", username);
+
+    user_t *ptr = find_user(users, username);
+
+    if(ptr == NULL){
+        printf(
+        "\n----------------------------------------------\n"
+        "\t\tUser not found"
+        "\n----------------------------------------------\n"
+        );
+        return;
+    }
+
+    while(true){
+
+        printf(
+        "\n----------------------------------------------\n"
+        "\tManaging %s's friends"
+        "\n----------------------------------------------\n"
+        , ptr->username);
+
+        printf(
+        "1. Add a new friend\n"
+        "2. Remove a friend\n"
+        "3. Return to main menu\n"
+        "Enter your choice: "
+        );
+
+        int friend_choice = get_int(1, 3);
+        char name[30];
+
+        switch(friend_choice){
+            case 1:
+                printf("Enter new friends name: ");
+                scanf(" %s", name);
+
+                add_friend(ptr, name);
+            break;
+
+            case 2:
+                display_user_friends(ptr);
+
+                printf("Enter new friends name: ");
+                scanf(" %s", name);
+
+                if(delete_friend(ptr, name)){
+                    printf("Friend %s was deleted\n", name);
+                    display_user_friends(ptr);
+                } else {
+                    printf("Invalid friend name");
+                }
+            break;
+
+            case 3:
+                return;
+            break;
+
+            default:
+                return;
+        }
+    }
+}
+
+_Bool get_yn(){
+    char ans;
+
+    scanf(" %c", &ans);
+    
+    while(true){
+        if(ans == 'y'||ans == 'Y'){
+            return true;
+        } else if(ans == 'n'||ans == 'N'){
+            return false;
+        } 
+
+        printf("Enter y or n: ");
+        scanf(" %c", &ans);
     }
 }
 /*

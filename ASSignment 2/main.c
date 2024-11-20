@@ -10,10 +10,11 @@
 #include <stdbool.h>
 #include "a2_nodes.h"
 #include "a2_functions.h"
+#define NUM_POSTS 3
 
 int main()
 {
-    /*FILE *csv_file = fopen("user_details.csv", "r");
+    FILE *csv_file = fopen("user_details.csv", "r");
     if (csv_file == NULL)
     {
         perror("Error opening the CSV file");
@@ -22,12 +23,12 @@ int main()
     // Parse CSV data and create users
     user_t *users = read_CSV_and_create_users(csv_file, 50);
 
-    fclose(csv_file);*/
+    fclose(csv_file);
  
     //Print main menu
         //Main loop
 
-        user_t *users = NULL;
+        //user_t *users = NULL;
 
         while(true){
 
@@ -56,13 +57,16 @@ int main()
                 break;
 
                 case 4:
+                    friends_menu(users);
                 break;
 
                 case 5:
+                    display_posts_by_n(users, NUM_POSTS);
                 break;
 
                 case 6:
                     printf("Thank you for using Facebook!\n");
+                    //teardown(users);
                     return EXIT_SUCCESS;
                     break;
 

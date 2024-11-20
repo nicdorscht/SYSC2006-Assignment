@@ -110,3 +110,7 @@ int get_int(int l_limit, int h_limit);
 void change_password(user_t *users);
 
 void post_menu(user_t *users);
+
+void friends_menu(user_t *users);
+
+_Bool get_yn();
