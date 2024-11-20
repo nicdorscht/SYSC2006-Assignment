@@ -28,8 +28,6 @@ int main()
     //Print main menu
         //Main loop
 
-        //user_t *users = NULL;
-
         while(true){
 
             print_menu();
@@ -66,7 +64,7 @@ int main()
 
                 case 6:
                     printf("Thank you for using Facebook!\n");
-                    //teardown(users);
+                    teardown(users);
                     return EXIT_SUCCESS;
                     break;
 

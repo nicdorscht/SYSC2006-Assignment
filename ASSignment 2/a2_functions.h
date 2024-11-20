@@ -114,3 +114,7 @@ void post_menu(user_t *users);
 void friends_menu(user_t *users);
 
 _Bool get_yn();
+
+void teardown_posts(user_t *user);
+
+void teardown_friends(user_t *user);

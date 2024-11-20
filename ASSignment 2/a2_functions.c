@@ -246,6 +246,20 @@ void print_menu(){
     );
 }
 
+void teardown(user_t *users){
+    if(users == NULL){ return; }
+
+    user_t *ptr = users;
+
+    for( ; ptr != NULL; ){
+        user_t *temp = ptr->next;
+        teardown_friends(ptr);
+        teardown_posts(ptr);
+        free(ptr);
+        ptr = temp;
+    }
+}
+
 int get_int(int l_limit, int h_limit){
    int num = 0;
 
@@ -447,6 +461,31 @@ _Bool get_yn(){
         scanf(" %c", &ans);
     }
 }
+
+void teardown_posts(user_t *user){
+    if(user->posts == NULL){ return; }
+
+    post_t *ptr = user->posts;
+
+    for( ; ptr != NULL; ){
+        post_t *temp = ptr->next;
+        free(ptr);
+        ptr = temp;
+    }
+}
+
+void teardown_friends(user_t *user){
+    if(user->friends == NULL){ return; }
+
+    friend_t *ptr = user->friends;
+
+    for( ; ptr != NULL; ){
+        friend_t *temp = ptr->next;
+        free(ptr);
+        ptr = temp;
+    }
+}
+
 /*
    ******** DONT MODIFY THIS FUNCTION ********
    Function that reads users from the text file.
