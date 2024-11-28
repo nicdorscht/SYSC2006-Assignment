@@ -118,3 +118,5 @@ _Bool get_yn();
 void teardown_posts(user_t *user);
 
 void teardown_friends(user_t *user);
+
+char *string_to_lower(char *s);

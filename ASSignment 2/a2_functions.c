@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <time.h>
+#include <ctype.h>
 #include "a2_nodes.h"
 #include "a2_functions.h"
 
@@ -37,8 +38,8 @@ user_t *add_user(user_t *users, const char *username, const char *password)
     {
         new_user->next = users;
         return new_user;
-    }
-
+    } 
+    
     for (; ptr != NULL; prev = ptr, ptr = ptr->next)
     {
         if (strcmp(ptr->username, username) > 0)
@@ -291,11 +292,8 @@ void print_menu()
         "\t\tMAIN MENU\n"
         "*******************************************\n"
         "1. Register a new user\n"
-        "2. Manage a user's profile (change password)\n"
-        "3. Manage a user's posts (add/remove)\n"
-        "4. Manage a user's friends (add/remove)\n"
-        "5. Display a user's posts\n"
-        "6. Exit\n\n"
+        "2. Login existing user\n"
+        "3. Exit\n\n"
         "Enter your choice: ");
 }
 
@@ -573,6 +571,13 @@ void teardown_friends(user_t *user)
     }
 }
 
+char *string_to_lower(char *s){
+    for(char *ptr = s; *ptr != '\0'; ptr++){
+        *ptr = tolower(*ptr);
+    }
+
+    return s;
+}
 /*
    ******** DONT MODIFY THIS FUNCTION ********
    Function that reads users from the text file.

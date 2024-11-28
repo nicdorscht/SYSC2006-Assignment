@@ -32,7 +32,7 @@ int main()
     {
 
         print_menu();
-        int user_choice = get_int(1, 6);
+        int user_choice = get_int(1, 3);
 
         switch (user_choice)
         {
@@ -42,29 +42,27 @@ int main()
 
             printf("Enter a username: ");
             scanf(" %s", username);
+
+            if(find_user(users, string_to_lower(username)) != NULL) {
+                printf("Username already in use!\n");
+                break;
+            }
+
             printf("Enter an up to 15 character password: ");
             scanf(" %s", password);
 
-            users = add_user(users, username, password);
+            while(strlen(password) < 8){
+                printf("Password must be at least 8 characters. \nEnter new password: ");
+                scanf(" %s", password);
+            }
+            
+            users = add_user(users, string_to_lower(username), password);
             break;
 
         case 2:
-            change_password(users);
             break;
 
-        case 3:
-            post_menu(users);
-            break;
-
-        case 4:
-            friends_menu(users);
-            break;
-
-        case 5:
-            display_posts_by_n(users, NUM_POSTS);
-            break;
-
-        case 6:
+        case 3: 
             printf("Thank you for using Facebook!\n");
             teardown(users);
             return EXIT_SUCCESS;
