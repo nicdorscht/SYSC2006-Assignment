@@ -22,6 +22,7 @@ int main()
     }
     // Parse CSV data and create users
     user_t *users = read_CSV_and_create_users(csv_file, 50);
+    add_CSV_friends(users);
 
     fclose(csv_file);
 
@@ -30,6 +31,8 @@ int main()
 
     while (true)
     {
+        char username[30];
+        char password[15];
 
         print_menu();
         int user_choice = get_int(1, 3);
@@ -37,9 +40,6 @@ int main()
         switch (user_choice)
         {
         case 1:
-            char username[30];
-            char password[15];
-
             printf("Enter a username: ");
             scanf(" %s", username);
 
@@ -60,6 +60,20 @@ int main()
             break;
 
         case 2:
+            printf("Enter a username: ");
+            scanf(" %s", username);
+
+            strcpy(username, string_to_lower(username));
+
+            printf("Enter password: ");
+            scanf(" %s", password);
+
+            user_t *user = login_user(users, username, password);
+
+            if(user == NULL) { break; }
+
+            logged_menu(users, user);
+
             break;
 
         case 3: 

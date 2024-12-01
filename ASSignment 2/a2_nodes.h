@@ -24,6 +24,7 @@ typedef struct user
 typedef struct friend
 {
     char username[30];
+    struct post **posts;
     struct friend *next;
 }
 friend_t;

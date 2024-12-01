@@ -78,7 +78,7 @@ void display_user_friends(user_t *user);
    more posts.
    If there are no more post or the user types “n” or “N”, the function returns. 
 */
-void display_posts_by_n(user_t *users, int number);
+void display_posts_by_n(user_t *user, int number);
 
 /*
    Function that free all users from the database before quitting the application.
@@ -107,11 +107,11 @@ user_t *read_CSV_and_create_users(FILE *file, int num_users);
 //Get int from user, l_limit: lower acceptable limit, h_limit: upper acceptable limit
 int get_int(int l_limit, int h_limit);
 
-void change_password(user_t *users);
+void change_password(user_t *user);
 
-void post_menu(user_t *users);
+void post_menu(user_t *user);
 
-void friends_menu(user_t *users);
+void friends_menu(user_t *users, user_t *user);
 
 _Bool get_yn();
 
@@ -120,3 +120,13 @@ void teardown_posts(user_t *user);
 void teardown_friends(user_t *user);
 
 char *string_to_lower(char *s);
+
+user_t *login_user(user_t *users, const char* username, const char* password);
+
+void print_logged_menu(const char* username);
+
+void logged_menu(user_t *users, user_t *user);
+
+friend_t *find_friend(friend_t *friends, const char *friend);
+
+void add_CSV_friends(user_t *users);
